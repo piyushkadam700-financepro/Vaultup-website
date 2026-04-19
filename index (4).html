@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaultUp — AI Money Coach for Young Adults</title>
+<meta name="description" content="VaultUp is the AI-powered money coach built for 16–28 year olds in the UK. 51 users in 8 weeks. Real coaching, real numbers, zero waffle.">
+<meta property="og:title" content="VaultUp — Your AI Money Coach">
+<meta property="og:description" content="Meet Val — the AI coach that knows your actual numbers before you ask. Goal tracking, group savings, spending insights. Free. Built for the UK.">
+<meta property="og:url" content="https://vaultup.co.uk">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --y:#EF9F27;--yd:#BA7517;--yb:#FAC775;--ydim:rgba(239,159,39,0.08);
+  --black:#09090b;--s1:#111113;--s2:#18181b;--s3:#222226;
+  --border:#2a2a2e;--text:#f2f2f2;--muted:#888;--dim:#444;
+  --green:#4ade80;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .3s;}
+nav.scrolled{background:rgba(9,9,11,.94);backdrop-filter:blur(16px);border-bottom:.5px solid var(--border);padding:13px 48px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;color:var(--y);text-decoration:none;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--y);color:var(--black);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;transition:all .2s;}
+.nav-cta:hover{background:var(--yb);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 24px 100px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(239,159,39,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(239,159,39,.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black 10%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black 10%,transparent 100%);}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(239,159,39,.09) 0%,transparent 65%);pointer-events:none;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(239,159,39,.08);border:.5px solid rgba(239,159,39,.22);border-radius:99px;padding:7px 18px;font-size:12px;color:var(--y);margin-bottom:36px;letter-spacing:.04em;animation:fadeUp .7s ease both;}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,12vw,138px);letter-spacing:.04em;line-height:.9;color:var(--text);animation:fadeUp .7s .08s ease both;}
+.hero-title .gold{color:var(--y);}
+
+.hero-sub{font-size:clamp(15px,2vw,19px);color:var(--muted);font-weight:300;line-height:1.75;max-width:520px;margin:26px auto 0;animation:fadeUp .7s .16s ease both;}
+.hero-sub b{color:var(--text);font-weight:500;}
+
+.hero-actions{display:flex;align-items:center;gap:14px;margin-top:44px;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .24s ease both;}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--y);color:var(--black);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;padding:16px 36px;border-radius:14px;border:none;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-primary:hover{background:var(--yb);transform:translateY(-2px);}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;padding:14px 24px;border-radius:14px;border:.5px solid var(--border);cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--yd);color:var(--y);}
+
+.hero-stats{display:flex;align-items:center;gap:36px;margin-top:68px;animation:fadeUp .7s .32s ease both;flex-wrap:wrap;justify-content:center;}
+.hstat{text-align:center;}
+.hstat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--y);letter-spacing:.04em;line-height:1;}
+.hstat-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;}
+.hdiv{width:.5px;height:34px;background:var(--border);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+
+/* ── TRACTION BANNER ── */
+.traction{background:var(--s1);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;}
+.tr-item{display:flex;align-items:center;gap:14px;}
+.tr-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--y);letter-spacing:.04em;line-height:1;}
+.tr-lbl{font-size:12px;color:var(--muted);line-height:1.5;max-width:110px;}
+.tr-lbl b{color:var(--text);font-weight:500;display:block;}
+.tr-div{width:.5px;height:44px;background:var(--border);}
+
+/* ── SECTIONS ── */
+.sec{padding:100px 24px;max-width:1100px;margin:0 auto;}
+.sec-lbl{font-size:11px;color:var(--y);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5.5vw,68px);letter-spacing:.04em;line-height:1.05;margin-bottom:18px;}
+.sec-sub{font-size:15px;color:var(--muted);line-height:1.8;max-width:540px;}
+.sec-sub b{color:var(--text);font-weight:500;}
+
+/* ── PROBLEM ── */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px;}
+.pcard{background:var(--s1);border:.5px solid var(--border);border-radius:18px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s;}
+.pcard:hover{border-color:rgba(239,159,39,.3);}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(239,159,39,.45),transparent);}
+.pnum{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--y);letter-spacing:.02em;line-height:1;margin-bottom:8px;}
+.ptxt{font-size:13px;color:var(--muted);line-height:1.75;}
+.ptxt b{color:var(--text);font-weight:500;}
+
+/* ── FEATURES ── */
+.feat-wrap{background:var(--s1);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:100px 24px;}
+.feat-inner{max-width:1100px;margin:0 auto;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:.5px solid var(--border);border-radius:20px;overflow:hidden;margin-top:52px;}
+.feat{background:var(--s1);padding:30px 26px;transition:background .2s;}
+.feat:hover{background:var(--s2);}
+.feat-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,159,39,.08);border:.5px solid rgba(239,159,39,.18);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+.feat-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:7px;}
+.feat-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+.feat-badge{display:inline-block;font-size:9px;padding:2px 8px;border-radius:99px;background:rgba(74,222,128,.1);color:var(--green);border:.5px solid rgba(74,222,128,.2);margin-top:8px;font-weight:500;}
+.feat-badge-soon{background:rgba(239,159,39,.1);color:var(--y);border:.5px solid rgba(239,159,39,.2);}
+
+/* ── VAL DEMO ── */
+.val-wrap{max-width:1100px;margin:0 auto;padding:100px 24px;}
+.val-inner{background:var(--s1);border:.5px solid var(--border);border-radius:22px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.val-left{padding:52px 44px;display:flex;flex-direction:column;justify-content:center;}
+.val-right{background:var(--s2);border-left:.5px solid var(--border);padding:36px 32px;display:flex;flex-direction:column;gap:14px;}
+.val-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4vw,54px);letter-spacing:.04em;line-height:1.05;margin-bottom:14px;}
+.val-desc{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:24px;}
+.val-points{display:flex;flex-direction:column;gap:11px;}
+.vpoint{display:flex;align-items:flex-start;gap:11px;}
+.vdot-sm{width:6px;height:6px;border-radius:50%;background:var(--y);flex-shrink:0;margin-top:7px;}
+.vtxt{font-size:13px;color:var(--muted);line-height:1.6;}
+.vtxt b{color:var(--text);font-weight:500;}
+
+.chat-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.bai{background:var(--s3);border:.5px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;padding:13px 15px;font-size:12px;color:#ccc;line-height:1.65;}
+.bai b{color:var(--y);font-weight:500;}
+.buser{background:var(--y);border-radius:16px;border-bottom-right-radius:4px;padding:11px 15px;font-size:12px;color:var(--black);font-weight:500;align-self:flex-end;max-width:82%;}
+.brow{display:flex;align-items:flex-start;gap:9px;}
+.vav{width:26px;height:26px;border-radius:50%;background:var(--y);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.vdot{width:8px;height:8px;border-radius:50%;background:var(--black);}
+.online-dot{width:9px;height:9px;border-radius:50%;background:var(--green);margin-left:auto;}
+.chat-header{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:.5px solid var(--border);}
+.chat-header-name{font-size:13px;font-weight:500;color:var(--text);}
+.chat-header-status{font-size:11px;color:var(--y);}
+
+/* ── COMPARISON ── */
+.comp-wrap{background:var(--s1);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:100px 24px;}
+.comp-inner{max-width:1100px;margin:0 auto;}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:52px;}
+.comp-card{background:var(--s2);border:.5px solid var(--border);border-radius:18px;padding:24px;}
+.comp-card.highlight{background:var(--black);border-color:rgba(239,159,39,.35);position:relative;overflow:hidden;}
+.comp-card.highlight::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--y),transparent);}
+.comp-name{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.comp-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;color:var(--text);margin-bottom:16px;}
+.comp-card.highlight .comp-title{color:var(--y);}
+.comp-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.comp-icon{font-size:12px;width:16px;flex-shrink:0;}
+.comp-txt{font-size:12px;color:var(--muted);line-height:1.5;}
+.comp-txt.good{color:#ccc;}
+
+/* ── ROADMAP ── */
+.road-wrap{max-width:1100px;margin:0 auto;padding:100px 24px;}
+.road-list{display:flex;flex-direction:column;margin-top:52px;}
+.road-item{display:grid;grid-template-columns:110px 1fr;gap:28px;padding:24px 0;border-bottom:.5px solid var(--border);align-items:start;}
+.road-item:last-child{border-bottom:none;}
+.r-phase{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;line-height:1.6;padding-top:2px;}
+.r-badge{display:inline-block;font-size:10px;padding:3px 10px;border-radius:99px;font-weight:500;margin-bottom:8px;}
+.live{background:rgba(74,222,128,.1);color:var(--green);border:.5px solid rgba(74,222,128,.25);}
+.soon{background:rgba(239,159,39,.1);color:var(--y);border:.5px solid rgba(239,159,39,.25);}
+.future{background:var(--s3);color:var(--dim);border:.5px solid var(--border);}
+.r-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:5px;}
+.r-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── STACK ── */
+.stack-wrap{background:var(--s1);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:100px 24px;}
+.stack-inner{max-width:1100px;margin:0 auto;}
+.stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:52px;}
+.scard{background:var(--s2);border:.5px solid var(--border);border-radius:14px;padding:20px;}
+.scard-layer{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.scard-tech{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.scard-why{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ── FOUNDER ── */
+.founder-wrap{max-width:1100px;margin:0 auto;padding:100px 24px;}
+.founder-inner{background:var(--s1);border:.5px solid var(--border);border-radius:22px;padding:52px;display:grid;grid-template-columns:160px 1fr;gap:44px;align-items:start;}
+.founder-av{width:160px;height:160px;border-radius:18px;background:var(--s2);border:.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--y);flex-shrink:0;}
+.flbl{font-size:11px;color:var(--y);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.fname{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:.04em;line-height:1;margin-bottom:6px;}
+.frole{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.fbio{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
+.fbio b{color:var(--text);font-weight:500;}
+.ftags{display:flex;flex-wrap:wrap;gap:7px;}
+.ftag{background:var(--s2);border:.5px solid var(--border);border-radius:99px;font-size:11px;color:var(--dim);padding:4px 12px;}
+
+/* ── CTA ── */
+.cta-wrap{padding:120px 24px;text-align:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(239,159,39,.08) 0%,transparent 65%);pointer-events:none;}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,104px);letter-spacing:.04em;line-height:.92;margin-bottom:20px;}
+.cta-title .gold{color:var(--y);}
+.cta-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:400px;margin:0 auto 44px;}
+
+/* ── FOOTER ── */
+footer{border-top:.5px solid var(--border);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.flogo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;color:var(--y);}
+.flinks{display:flex;gap:22px;}
+.flinks a{font-size:12px;color:var(--dim);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:var(--muted);}
+.fcopy{font-size:12px;color:var(--dim);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:16px 20px;}nav.scrolled{padding:12px 20px;}
+  .nav-links{display:none;}
+  .traction{padding:24px 20px;gap:24px;}
+  .tr-div{display:none;}
+  .problem-grid{grid-template-columns:1fr;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .val-inner{grid-template-columns:1fr;}
+  .val-right{border-left:none;border-top:.5px solid var(--border);}
+  .val-left{padding:28px 22px;}
+  .comp-grid{grid-template-columns:1fr;}
+  .road-item{grid-template-columns:1fr;gap:6px;}
+  .stack-grid{grid-template-columns:1fr 1fr;}
+  .founder-inner{grid-template-columns:1fr;padding:28px 22px;}
+  .founder-av{width:80px;height:80px;font-size:30px;}
+  footer{flex-direction:column;align-items:flex-start;padding:28px 20px;}
+  .hdiv{display:none;}
+  .hero-stats{gap:18px;}
+}
+@media(max-width:560px){
+  .feat-grid{grid-template-columns:1fr;}
+  .stack-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Vaultup</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#founder">About</a>
+  </div>
+  <a href="https://vaultup.vercel.app/app.html" class="nav-cta" target="_blank">Open App →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><div class="bdot"></div>51 users · 8 weeks · zero paid acquisition</div>
+  <h1 class="hero-title">
+    Stop letting<br>money just<br><span class="gold">disappear.</span>
+  </h1>
+  <p class="hero-sub">
+    VaultUp is the AI money coach built for <b>16–28 year olds in the UK</b> — not generic tips, not passive automation. A coach that knows your numbers and tells you exactly where you stand.
+  </p>
+  <div class="hero-actions">
+    <a href="https://vaultup.vercel.app/app.html" class="btn-primary" target="_blank">
+      Open App — it's free
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="https://vaultup.vercel.app/app.html" class="btn-ghost" target="_blank">See a demo first</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">51+</div><div class="hstat-lbl">Real users</div></div>
+    <div class="hdiv"></div>
+    <div class="hstat"><div class="hstat-num">8</div><div class="hstat-lbl">Weeks live</div></div>
+    <div class="hdiv"></div>
+    <div class="hstat"><div class="hstat-num">£0</div><div class="hstat-lbl">Paid acquisition</div></div>
+    <div class="hdiv"></div>
+    <div class="hstat"><div class="hstat-num">Claude</div><div class="hstat-lbl">AI by Anthropic</div></div>
+    <div class="hdiv"></div>
+    <div class="hstat"><div class="hstat-num">UK</div><div class="hstat-lbl">Open Banking ready</div></div>
+  </div>
+</section>
+
+<!-- TRACTION BANNER -->
+<div class="traction reveal">
+  <div class="tr-item">
+    <div class="tr-num">51+</div>
+    <div class="tr-lbl"><b>Registered users</b>Supabase auth · 8 weeks live</div>
+  </div>
+  <div class="tr-div"></div>
+  <div class="tr-item">
+    <div class="tr-num">£0</div>
+    <div class="tr-lbl"><b>Paid acquisition</b>100% organic growth</div>
+  </div>
+  <div class="tr-div"></div>
+  <div class="tr-item">
+    <div class="tr-num">5</div>
+    <div class="tr-lbl"><b>Phase roadmap</b>FCA-aligned Open Banking</div>
+  </div>
+  <div class="tr-div"></div>
+  <div class="tr-item">
+    <div class="tr-num">67%</div>
+    <div class="tr-lbl"><b>Of 18–28 year olds</b>No savings habit — FCA 2022</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="sec" id="problem">
+  <div class="reveal">
+    <div class="sec-lbl">The problem</div>
+    <h2 class="sec-title">Young adults are flying<br>blind <span style="color:var(--y)">financially.</span></h2>
+    <p class="sec-sub">The problem isn't information — it's personalisation. Nobody was building a product that spoke to this demographic <b>as individuals, not categories.</b></p>
+  </div>
+  <div class="problem-grid reveal" style="transition-delay:.1s">
+    <div class="pcard">
+      <div class="pnum">67%</div>
+      <p class="ptxt">of 18–28 year olds in the UK have <b>no structured savings habit.</b> The problem is not information — it's that nobody talks to them as individuals. (FCA Financial Lives Survey, 2022)</p>
+    </div>
+    <div class="pcard">
+      <div class="pnum">£0</div>
+      <p class="ptxt">Most young adults receive <b>zero personalised financial guidance</b> from their bank or employer. Monzo shows you a pie chart. Chip moves money silently. Nobody explains anything.</p>
+    </div>
+    <div class="pcard">
+      <div class="pnum">16+</div>
+      <p class="ptxt">Junior ISAs, Plan 2 student loans, starter salaries — <b>complex decisions at exactly the wrong time</b> to be left without guidance. VaultUp's AI coach Val knows these rules and applies them to your situation.</p>
+    </div>
+    <div class="pcard">
+      <div class="pnum">Val</div>
+      <p class="ptxt">VaultUp's AI coach knows your <b>actual income, spending breakdown, goal progress percentages, group pot balances, and streak</b> before answering a single question. Not generic. Not a bot. A coach.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="feat-wrap" id="features">
+  <div class="feat-inner">
+    <div class="reveal">
+      <div class="sec-lbl">What VaultUp does</div>
+      <h2 class="sec-title">Everything in one place.<br><span style="color:var(--y)">Finally.</span></h2>
+    </div>
+    <div class="feat-grid reveal" style="transition-delay:.1s">
+      <div class="feat">
+        <div class="feat-ic">🤖</div>
+        <div class="feat-title">AI Money Coach — Val</div>
+        <p class="feat-desc">Powered by Anthropic Claude. Val knows your income, spending categories, every goal's progress percentage, group pot balances, streak and XP before you ask. Real advice, real numbers, zero waffle.</p>
+        <span class="feat-badge">Live</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ic">🎯</div>
+        <div class="feat-title">Goal tracking + monthly history</div>
+        <p class="feat-desc">Set savings goals with targets and monthly commitments. Progress resets automatically each month — but your full history is permanently saved in Supabase. Val knows your ETA to every goal.</p>
+        <span class="feat-badge">Live</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ic">👥</div>
+        <div class="feat-title">Group savings with invite links</div>
+        <p class="feat-desc">Create a group, share an invite link. Each member gets their own isolated pot — money never mixes. Group balance is the sum of individual pots. Admin controls membership. Exit = money back.</p>
+        <span class="feat-badge">Live</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ic">📊</div>
+        <div class="feat-title">Spending insights</div>
+        <p class="feat-desc">Track across five categories: Rent/bills, Food, Subscriptions, Travel, Other. The "unaccounted" figure (income minus spending minus savings) is what Val uses to find where money is disappearing.</p>
+        <span class="feat-badge">Live</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ic">⚡</div>
+        <div class="feat-title">Gamification</div>
+        <p class="feat-desc">Daily streak, XP, Bronze to Platinum levels, and badge unlocks at meaningful thresholds. Designed around the habit loop: cue → routine → reward. Financial engagement that feels like progress.</p>
+        <span class="feat-badge">Live</span>
+      </div>
+      <div class="feat">
+        <div class="feat-ic">🏦</div>
+        <div class="feat-title">Open Banking — coming</div>
+        <p class="feat-desc">FCA-aligned integration roadmap: TrueLayer read-only (Phase 2), GoCardless direct debits (Phase 3), Modulr pooled accounts (Phase 4). Regulatory pathway documented at every phase.</p>
+        <span class="feat-badge feat-badge-soon">Roadmap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VAL DEMO -->
+<section class="val-wrap" id="how-it-works">
+  <div class="val-inner reveal">
+    <div class="val-left">
+      <div class="sec-lbl">Meet Val</div>
+      <h2 class="val-title">Not a chatbot.<br>A <span style="color:var(--y)">coach.</span></h2>
+      <p class="val-desc">Before you type a word, Val already knows your complete financial picture. Every message triggers a rebuild of a dynamic system prompt containing your income, spending, goals, group pots, streak, and XP. The AI sees your life before it sees your question.</p>
+      <div class="val-points">
+        <div class="vpoint"><div class="vdot-sm"></div><p class="vtxt"><b>"You've got £1,800 in and £1,270 tracked. That's £530 unaccounted."</b> Not "try to spend less."</p></div>
+        <div class="vpoint"><div class="vdot-sm"></div><p class="vtxt"><b>UK-specific guardrails hardcoded</b> — Junior ISA £9k/yr, Cash ISA £20k/yr, Plan 2 student loan 9% above £27,295</p></div>
+        <div class="vpoint"><div class="vdot-sm"></div><p class="vtxt"><b>Multi-turn dialogue</b> — full conversation history sent with every API call. Val remembers the thread.</p></div>
+        <div class="vpoint"><div class="vdot-sm"></div><p class="vtxt"><b>Privacy by design</b> — conversation history never persisted to storage. Resets per session.</p></div>
+      </div>
+    </div>
+    <div class="val-right">
+      <div class="chat-header">
+        <div class="vav"><div class="vdot"></div></div>
+        <div>
+          <div class="chat-header-name">Val</div>
+          <div class="chat-header-status">online · your money coach</div>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+      <div class="chat-lbl">Real conversation</div>
+      <div class="buser">How am I doing this month?</div>
+      <div class="brow">
+        <div class="vav"><div class="vdot"></div></div>
+        <div class="bai">You're smashing it 🔥 <b>£320 saved</b> — 80% of your £400 target with a week still to go. Holiday fund at 34%, on track for August. One thing: <b>Deliveroo is your biggest leak</b> at £210 this month. Cut that by £50 and you'd hit target every month.</div>
+      </div>
+      <div class="buser">How long until my holiday goal?</div>
+      <div class="brow">
+        <div class="vav"><div class="vdot"></div></div>
+        <div class="bai">At <b>£160/month</b> you'll hit your £1,200 Holiday goal in <b>5 months</b> — right on time for August 2026 ✈️ £790 left. Keep the streak going and I'll flag if you fall behind.</div>
+      </div>
+      <div class="buser">What about my Ibiza group pot?</div>
+      <div class="brow">
+        <div class="vav"><div class="vdot"></div></div>
+        <div class="bai">Your <b>Ibiza Squad pot is at £320</b> — the group is at £800 of £2,400 total. You're the top contributor. 3 months left to deadline. If the group keeps this pace you'll make it with £180 to spare.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comp-wrap">
+  <div class="comp-inner">
+    <div class="reveal">
+      <div class="sec-lbl">Why VaultUp</div>
+      <h2 class="sec-title">The gap nobody<br><span style="color:var(--y)">filled.</span></h2>
+    </div>
+    <div class="comp-grid reveal" style="transition-delay:.1s">
+      <div class="comp-card">
+        <div class="comp-name">The competition</div>
+        <div class="comp-title">Monzo / Chip / Plum</div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">No AI coach — passive automation only</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">Generic advice, no user context</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">No group savings social layer</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">Not built for 16–28 year olds specifically</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">Cleo: roasting bot — no structured goal tracking</p></div>
+      </div>
+      <div class="comp-card highlight">
+        <div class="comp-name">VaultUp</div>
+        <div class="comp-title">Val</div>
+        <div class="comp-row"><div class="comp-icon">✓</div><p class="comp-txt good">AI coach with full financial context per message</p></div>
+        <div class="comp-row"><div class="comp-icon">✓</div><p class="comp-txt good">Specific to your numbers — not generic tips</p></div>
+        <div class="comp-row"><div class="comp-icon">✓</div><p class="comp-txt good">Group savings with individual pots + invite links</p></div>
+        <div class="comp-row"><div class="comp-icon">✓</div><p class="comp-txt good">Built specifically for UK 16–28 year olds</p></div>
+        <div class="comp-row"><div class="comp-icon">✓</div><p class="comp-txt good">Free. Mobile-first. AI-native. Open Banking roadmap.</p></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Also missing</div>
+        <div class="comp-title">YNAB / Emma</div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">YNAB: £99/yr, desktop-first, no AI</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">Emma: aggregator, not a coach</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">No gamification or habit mechanics</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">No group savings feature</p></div>
+        <div class="comp-row"><div class="comp-icon">✗</div><p class="comp-txt">Not designed around young UK adults' reality</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="road-wrap" id="roadmap">
+  <div class="reveal">
+    <div class="sec-lbl">Open Banking roadmap</div>
+    <h2 class="sec-title">Built for the UK's<br><span style="color:var(--y)">financial future.</span></h2>
+    <p class="sec-sub">Architected around the FCA's Open Banking initiative (OBIE, PSD2). Each phase adds capability without a rebuild — the individual pot architecture and AI coaching layer scale through every phase.</p>
+  </div>
+  <div class="road-list reveal" style="transition-delay:.1s">
+    <div class="road-item">
+      <div class="r-phase">Phase 1<br>Now</div>
+      <div><div class="r-badge live">Live — 51 users</div><div class="r-title">AI coaching + Supabase auth + group savings</div><p class="r-desc">Val coaches users based on their complete financial profile. Real user accounts with Supabase auth and Row Level Security. Group savings with individual pots and working invite links. Monthly history snapshots. Zero FCA registration required — no financial activity by VaultUp.</p></div>
+    </div>
+    <div class="road-item">
+      <div class="r-phase">Phase 2<br>6 months</div>
+      <div><div class="r-badge soon">Coming soon</div><div class="r-title">React migration + read-only bank linking (TrueLayer)</div><p class="r-desc">Frontend refactor to React components. Open Banking read-only connection via TrueLayer (AISP scope — TrueLayer holds the FCA licence, VaultUp integrates via API). Val auto-detects contributions from real transaction data. No manual spending entry needed.</p></div>
+    </div>
+    <div class="road-item">
+      <div class="r-phase">Phase 3<br>12 months</div>
+      <div><div class="r-badge future">Roadmap</div><div class="r-title">Automated direct debits via GoCardless</div><p class="r-desc">Member sets a monthly amount. GoCardless handles the Direct Debit mandate (GoCardless holds the Payment Institution licence — VaultUp is an authorised partner). Money moves automatically on payday. Group pot contributions happen without manual action.</p></div>
+    </div>
+    <div class="road-item">
+      <div class="r-phase">Phase 4<br>18 months</div>
+      <div><div class="r-badge future">Roadmap</div><div class="r-title">Real pooled accounts via Modulr or ClearBank</div><p class="r-desc">Each member's group pot becomes a real ring-fenced sub-account under a partner's FCA e-money licence. Own sort code and account number. Automated returns on exit via Faster Payments. Interest on balances. Achievable at 10,000+ users.</p></div>
+    </div>
+    <div class="road-item">
+      <div class="r-phase">Phase 5<br>2–3 years</div>
+      <div><div class="r-badge future">Roadmap</div><div class="r-title">Group ISA and investment products</div><p class="r-desc">From saving for a holiday to building a house deposit — tax-free group investment pots for long-term shared goals. VaultUp transitions from savings app to wealth platform. The full arc from age 16 to 28.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="stack-wrap">
+  <div class="stack-inner">
+    <div class="reveal">
+      <div class="sec-lbl">Technology</div>
+      <h2 class="sec-title">Production-grade.<br><span style="color:var(--y)">From day one.</span></h2>
+    </div>
+    <div class="stack-grid reveal" style="transition-delay:.1s">
+      <div class="scard"><div class="scard-layer">AI</div><div class="scard-tech">Anthropic Claude</div><p class="scard-why">claude-sonnet-4-20250514 · Dynamic system prompt per message · Full conversation history</p></div>
+      <div class="scard"><div class="scard-layer">Auth & Database</div><div class="scard-tech">Supabase</div><p class="scard-why">PostgreSQL + Row Level Security · JWT auth · Real user records · Monthly history table</p></div>
+      <div class="scard"><div class="scard-layer">Frontend</div><div class="scard-tech">Vanilla JS</div><p class="scard-why">Zero bundle overhead · Instant mobile load · Single-file architecture for iteration speed</p></div>
+      <div class="scard"><div class="scard-layer">API Proxy</div><div class="scard-tech">Vercel Serverless</div><p class="scard-why">API key isolated server-side · Never exposed to browser · /api/chat.js proxy</p></div>
+      <div class="scard"><div class="scard-layer">Counter</div><div class="scard-tech">Upstash Redis</div><p class="scard-why">Persistent atomic user counter · Edge-compatible · /api/count endpoint</p></div>
+      <div class="scard"><div class="scard-layer">Deployment</div><div class="scard-tech">Vercel</div><p class="scard-why">GitHub auto-deploy · Commit to live in ~90 seconds · Global CDN</p></div>
+      <div class="scard"><div class="scard-layer">Analytics</div><div class="scard-tech">Vercel Analytics</div><p class="scard-why">Privacy-first · No cookies · No GDPR headaches · Real visitor data</p></div>
+      <div class="scard"><div class="scard-layer">Security</div><div class="scard-tech">RLS + Env vars</div><p class="scard-why">Supabase Row Level Security on every table · Zero secrets in codebase or browser</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-wrap" id="founder">
+  <div class="founder-inner reveal">
+    <div class="founder-av">PK</div>
+    <div>
+      <div class="flbl">Founder</div>
+      <div class="fname">Piyush Kadam</div>
+      <div class="frole">Founder & Product Builder · Bristol, UK</div>
+      <p class="fbio">
+        VaultUp was born from a personal frustration. As someone studying finance — ACCA part-qualified, MSc in Accounting and Finance — I knew exactly how money worked in theory. Balance sheets, cash flow models, yield curves. But none of that helped me, or anyone I knew, actually save consistently in real life.<br><br>
+        The people I was watching struggle weren't careless. They were 19, 22, 25 — in their first jobs, earning money for the first time, trying to figure it out. Nobody was talking to them. Nobody said: <b>"You've got £1,800 coming in this month — here's where it's going and here's what you should do."</b><br><br>
+        That was the gap. VaultUp is the product I wish existed. Built solo, deployed in 8 weeks, 51 real users, <b>zero paid acquisition</b> — and a clear 5-phase roadmap to becoming the UK's first AI-native wealth platform for young adults.
+      </p>
+      <div class="ftags">
+        <span class="ftag">ACCA Part-Qualified</span>
+        <span class="ftag">MSc Accounting & Finance</span>
+        <span class="ftag">Anthropic Claude API</span>
+        <span class="ftag">UK Fintech</span>
+        <span class="ftag">Open Banking</span>
+        <span class="ftag">Supabase</span>
+        <span class="ftag">Bristol, UK</span>
+        <span class="ftag">Global Talent Visa — Exceptional Promise</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-wrap">
+  <div class="cta-glow"></div>
+  <div class="reveal">
+    <h2 class="cta-title">Your money.<br>Your <span class="gold">coach.</span><br>Your goals.</h2>
+    <p class="cta-sub">Free. No card required. Val is ready when you are. Join 51+ people already saving smarter.</p>
+    <a href="https://vaultup.vercel.app/app.html" class="btn-primary" target="_blank" style="font-size:17px;padding:17px 44px;">
+      Start saving free
+      <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">Vaultup</div>
+  <div class="flinks">
+    <a href="https://vaultup.vercel.app/app.html" target="_blank">Open App</a>
+    <a href="https://vaultup.vercel.app/privacy.html" target="_blank">Privacy</a>
+    <a href="https://github.com/piyushkadam700-financepro/Vaultup" target="_blank">GitHub</a>
+    <a href="mailto:hello@vaultup.app">Contact</a>
+  </div>
+  <div class="fcopy">© 2026 VaultUp · hello@vaultup.app · Bristol, UK</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);} });
+  }, {threshold: 0.08});
+  document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
