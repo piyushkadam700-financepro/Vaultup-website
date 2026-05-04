@@ -630,5 +630,10 @@ footer{border-top:.5px solid var(--border);padding:36px 48px;display:flex;align-
   }, {threshold: 0.08});
   document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
 </script>
+<script>
+if(window.location.hash && window.location.hash.includes('type=recovery')) {
+  window.location.replace('/app.html' + window.location.hash);
+}
+</script>
 </body>
 </html>
