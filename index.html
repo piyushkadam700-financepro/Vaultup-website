@@ -631,9 +631,21 @@ footer{border-top:.5px solid var(--border);padding:36px 48px;display:flex;align-
   document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
 </script>
 <script>
-if(window.location.hash && window.location.hash.includes('type=recovery')) {
-  window.location.replace('/app.html' + window.location.hash);
-}
+  const hash = window.location.hash;
+  const params = new URLSearchParams(window.location.search);
+  
+  // Handle password reset
+  if(hash && hash.includes('type=recovery')){
+    window.location.replace('/app.html' + hash);
+  }
+  // Handle email confirmation
+  else if(hash && hash.includes('type=signup')){
+    window.location.replace('/app.html' + hash);
+  }
+  // Handle any other Supabase auth redirect
+  else if(hash && hash.includes('access_token')){
+    window.location.replace('/app.html' + hash);
+  }
 </script>
 </body>
 </html>
